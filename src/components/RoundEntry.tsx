@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { Player } from "@/hooks/useGameState";
-import { Send } from "lucide-react";
+import { Send, Trophy } from "lucide-react";
 
 interface RoundEntryProps {
   roundNumber: number;
@@ -27,23 +27,26 @@ export default function RoundEntry({ roundNumber, activePlayers, onSubmit }: Rou
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="glass-card p-5 space-y-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring" }}
+      className="fun-card p-5 space-y-4"
     >
-      <h3 className="font-bold text-lg text-foreground">
-        Round <span className="text-gold font-mono">{roundNumber}</span>
+      <h3 className="font-extrabold text-xl text-foreground font-display flex items-center gap-2">
+        🎯 Round <span className="text-pink-fun">{roundNumber}</span>
       </h3>
 
       {/* Winner selector */}
       <div>
-        <label className="text-sm font-semibold text-muted-foreground mb-1 block">Winner</label>
+        <label className="text-sm font-bold text-muted-foreground mb-1 block flex items-center gap-1">
+          <Trophy size={14} className="text-sunny" /> Who won?
+        </label>
         <select
           value={winner}
           onChange={(e) => setWinner(e.target.value)}
-          className="w-full px-3 py-2.5 rounded-lg bg-muted border border-border/50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="w-full px-4 py-2.5 rounded-xl bg-muted border-2 border-border/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
         >
-          <option value="">Select winner...</option>
+          <option value="">Pick the winner... 🏆</option>
           {activePlayers.map((p) => (
             <option key={p.id} value={p.name}>{p.name}</option>
           ))}
@@ -52,13 +55,22 @@ export default function RoundEntry({ roundNumber, activePlayers, onSubmit }: Rou
 
       {/* Penalty inputs */}
       {winner && (
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-muted-foreground">Penalty points</label>
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="space-y-2"
+        >
+          <label className="text-sm font-bold text-muted-foreground">Penalty points 📝</label>
           {activePlayers
             .filter((p) => p.name !== winner)
             .map((p) => (
-              <div key={p.id} className="flex items-center gap-3">
-                <span className="text-sm text-foreground flex-1 truncate">{p.name}</span>
+              <motion.div
+                key={p.id}
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                className="flex items-center gap-3"
+              >
+                <span className="text-sm text-foreground flex-1 truncate font-semibold">{p.name}</span>
                 <input
                   type="number"
                   min={0}
@@ -67,20 +79,22 @@ export default function RoundEntry({ roundNumber, activePlayers, onSubmit }: Rou
                     setPenalties((prev) => ({ ...prev, [p.name]: e.target.value }))
                   }
                   placeholder="0"
-                  className="w-24 px-3 py-2 rounded-lg bg-muted border border-border/50 text-foreground text-right font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-24 px-3 py-2 rounded-xl bg-muted border-2 border-border/60 text-foreground text-right font-bold font-display focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
-              </div>
+              </motion.div>
             ))}
-        </div>
+        </motion.div>
       )}
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
         onClick={handleSubmit}
         disabled={!winner}
-        className="btn-gold w-full flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="btn-candy w-full flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        <Send size={16} /> Submit Round
-      </button>
+        <Send size={16} /> Submit Round! 🎉
+      </motion.button>
     </motion.div>
   );
 }

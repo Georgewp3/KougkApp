@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Player } from "@/hooks/useGameState";
-import { Scissors } from "lucide-react";
+import { Scissors, Sparkles } from "lucide-react";
 
 interface PerfectCutProps {
   activePlayers: Player[];
@@ -15,74 +15,97 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
 
   const perfectCutCards = totalPlayers * 10 + 1;
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     if (!selected || animating) return;
     setAnimating(true);
     onApply(selected);
     setTimeout(() => {
       setAnimating(false);
       setSelected("");
-    }, 1200);
-  };
+    }, 1800);
+  }, [selected, animating, onApply]);
 
   return (
-    <div className="glass-card p-5 space-y-4 relative overflow-hidden">
+    <motion.div
+      whileHover={{ scale: 1.01 }}
+      className="fun-card p-5 space-y-4 relative overflow-hidden"
+    >
+      {/* Slash animation */}
       <AnimatePresence>
         {animating && (
-          <motion.div
-            initial={{ x: "-100%", rotate: -45, opacity: 0 }}
-            animate={{ x: "200%", rotate: -45, opacity: [0, 1, 1, 0] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="absolute inset-0 z-10 pointer-events-none"
-          >
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent" />
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ x: "-120%", rotate: -30, opacity: 0 }}
+              animate={{ x: "220%", rotate: -30, opacity: [0, 1, 1, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="absolute inset-0 z-10 pointer-events-none"
+            >
+              <div className="absolute top-1/2 left-0 w-full h-1.5 rounded-full"
+                style={{ background: "var(--gradient-candy)" }} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: [0, 1, 1, 0], scale: [0.3, 1.2, 1, 0.8] }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
+            >
+              <span className="text-3xl font-extrabold font-display text-pink-fun drop-shadow-lg">
+                ✂️ Perfect Cut! -10 ✨
+              </span>
+            </motion.div>
+            {/* Confetti particles */}
+            {[...Array(8)].map((_, i) => (
+              <motion.span
+                key={i}
+                initial={{ x: "50%", y: "50%", opacity: 1, scale: 0 }}
+                animate={{
+                  x: `${50 + (Math.random() - 0.5) * 80}%`,
+                  y: `${50 + (Math.random() - 0.5) * 80}%`,
+                  opacity: 0,
+                  scale: 1,
+                }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="absolute text-xl pointer-events-none z-20"
+              >
+                {["⭐", "🌟", "✨", "💫", "🎉", "🎊", "✂️", "💎"][i]}
+              </motion.span>
+            ))}
+          </>
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {animating && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
-          >
-            <span className="text-2xl font-black text-gold">✂️ Perfect Cut! -10</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
-        <Scissors size={18} className="text-gold" /> Perfect Cut
+      <h3 className="font-extrabold text-xl text-foreground font-display flex items-center gap-2">
+        <Scissors size={20} className="text-teal-fun" /> Perfect Cut ✨
       </h3>
 
-      <p className="text-xs text-muted-foreground">
-        Cut exactly <span className="text-gold font-bold">{perfectCutCards}</span> cards
-        ({totalPlayers} × 10 + 1) for a -10 bonus.
+      <p className="text-sm text-muted-foreground font-semibold">
+        Cut exactly <span className="text-pink-fun font-extrabold text-lg">{perfectCutCards}</span> cards
+        ({totalPlayers} × 10 + 1) for a sweet <span className="text-teal-fun font-bold">-10 bonus!</span>
       </p>
 
       <div className="flex gap-2">
         <select
           value={selected}
           onChange={(e) => setSelected(e.target.value)}
-          className="flex-1 px-3 py-2 rounded-lg bg-muted border border-border/50 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="flex-1 px-3 py-2.5 rounded-xl bg-muted border-2 border-border/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
           disabled={animating}
         >
-          <option value="">Select player...</option>
+          <option value="">Select player... ✂️</option>
           {activePlayers.map((p) => (
             <option key={p.id} value={p.name}>{p.name}</option>
           ))}
         </select>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleApply}
           disabled={!selected || animating}
-          className="btn-gold px-4 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn-candy px-5 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
         >
-          Apply
-        </button>
+          <Sparkles size={16} /> Cut!
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
