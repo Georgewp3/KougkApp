@@ -40,6 +40,7 @@ export default function GameScreen() {
       <SetupScreen
         onStart={(names) => {
           const { firstDealerName } = startGame(names);
+          playClick();
           toast.success(`🎲 Game started! First dealer: ${firstDealerName}`);
           return { firstDealerName };
         }}
