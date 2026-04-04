@@ -73,7 +73,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               className="relative text-center"
             >
               <div className="text-6xl sm:text-8xl font-extrabold font-display drop-shadow-2xl"
-                style={{ color: "white", textShadow: "0 0 40px hsl(var(--pink-fun)), 0 0 80px hsl(var(--teal-fun))" }}>
+                style={{ color: "white", textShadow: "0 0 40px hsl(var(--pink)), 0 0 80px hsl(var(--teal))" }}>
                 ✂️ PERFECT CUT!
               </div>
               <motion.div
