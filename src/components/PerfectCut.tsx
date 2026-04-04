@@ -47,7 +47,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               animate={{ x: "120vw", rotate: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="absolute w-[200vw] h-2 rounded-full"
-              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--pink-fun)), hsl(var(--teal-fun)), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--pink)), hsl(var(--teal)), transparent)" }}
             />
             {/* Second slash */}
             <motion.div
@@ -55,7 +55,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               animate={{ x: "-120vw", rotate: 15 }}
               transition={{ duration: 0.35, ease: "easeOut", delay: 0.15 }}
               className="absolute w-[200vw] h-1.5 rounded-full"
-              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--sunny-fun)), hsl(var(--pink-fun)), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--sunny)), hsl(var(--pink)), transparent)" }}
             />
             {/* Central flash */}
             <motion.div
@@ -73,7 +73,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               className="relative text-center"
             >
               <div className="text-6xl sm:text-8xl font-extrabold font-display drop-shadow-2xl"
-                style={{ color: "white", textShadow: "0 0 40px hsl(var(--pink-fun)), 0 0 80px hsl(var(--teal-fun))" }}>
+                style={{ color: "white", textShadow: "0 0 40px hsl(var(--pink)), 0 0 80px hsl(var(--teal))" }}>
                 ✂️ PERFECT CUT!
               </div>
               <motion.div
@@ -81,7 +81,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
                 className="text-4xl sm:text-5xl font-extrabold font-display mt-2"
-                style={{ color: "hsl(var(--sunny-fun))", textShadow: "0 0 20px hsl(var(--sunny-fun))" }}
+                style={{ color: "hsl(var(--sunny))", textShadow: "0 0 20px hsl(var(--sunny))" }}
               >
                 -10 Points! 🔥
               </motion.div>
