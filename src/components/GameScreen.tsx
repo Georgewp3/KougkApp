@@ -243,7 +243,7 @@ export default function GameScreen() {
                     <p>✅ 100 points is safe — 101+ triggers bust!</p>
                     <p>💥 1st bust: ❌ mark, score resets to highest other active player</p>
                     <p>💀 2nd bust: eliminated!</p>
-                    <p>✂️ Perfect Cut: -10 points (min 0)</p>
+                    <p>✂️ Perfect Cut: -10 points (can go negative!)</p>
                     <p>🃏 Perfect Cut cards: {state.players.length * 10 + 1} ({state.players.length}×10+1)</p>
                     <p>👑 Last active player wins!</p>
                   </motion.div>
