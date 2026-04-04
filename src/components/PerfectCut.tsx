@@ -68,7 +68,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
             {/* Big text */}
             <motion.div
               initial={{ scale: 0, rotate: -10 }}
-              animate={{ scale: [0, 1.3, 1], rotate: [−10, 3, 0] }}
+              animate={{ scale: [0, 1.3, 1], rotate: [-10, 3, 0] }}
               transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 200 }}
               className="relative text-center"
             >
