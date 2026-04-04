@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useGameState } from "@/hooks/useGameState";
+import { playRoundWin, playBust, playElimination, playPerfectCut, playGameOver, playClick, playError } from "@/hooks/useSoundEffects";
 import PlayerCard from "./PlayerCard";
 import RoundEntry from "./RoundEntry";
 import PerfectCut from "./PerfectCut";
