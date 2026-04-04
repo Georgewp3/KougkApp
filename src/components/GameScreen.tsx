@@ -49,11 +49,23 @@ export default function GameScreen() {
 
   const handleSubmitRound = (winnerName: string, penalties: Record<string, number>) => {
     submitRound(winnerName, penalties);
+    playRoundWin();
     toast.success(`🎉 Round complete! ${winnerName} wins!`);
+    // Check for bust/elimination events after a tick
+    setTimeout(() => {
+      const latest = state.history[0];
+      if (latest) {
+        latest.events.forEach((e) => {
+          if (e.type === "bust") playBust();
+          if (e.type === "elimination") playElimination();
+        });
+      }
+    }, 300);
   };
 
   const handlePerfectCut = (playerName: string) => {
     applyPerfectCut(playerName);
+    playPerfectCut();
     toast("✂️ Perfect Cut!", {
       description: `${playerName} gets -10 points! Nice one!`,
     });
@@ -62,12 +74,14 @@ export default function GameScreen() {
   const handleEndGame = () => {
     setShowEndConfirm(false);
     endGame();
+    playGameOver();
     toast("🏁 Game ended!");
   };
 
   const handleReset = () => {
     setShowResetConfirm(false);
     resetGame();
+    playClick();
     toast("🔄 Game reset! Ready for a new one!");
   };
 
