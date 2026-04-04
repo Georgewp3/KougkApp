@@ -22,7 +22,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
     setTimeout(() => {
       setAnimating(false);
       setSelected("");
-    }, 1800);
+    }, 2500);
   }, [selected, animating, onApply]);
 
   return (
