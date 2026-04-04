@@ -199,7 +199,7 @@ export function useGameState() {
     setState((prev) => {
       const players = prev.players.map((p) =>
         p.name === playerName
-          ? { ...p, score: Math.max(0, p.score - 10) }
+          ? { ...p, score: p.score - 10 }
           : p
       );
       // Add to latest history if exists
