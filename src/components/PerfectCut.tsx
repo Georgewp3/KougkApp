@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import ReactDOM from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Player } from "@/hooks/useGameState";
 import { Scissors, Sparkles } from "lucide-react";
