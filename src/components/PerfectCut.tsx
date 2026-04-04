@@ -47,7 +47,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               animate={{ x: "120vw", rotate: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="absolute w-[200vw] h-2 rounded-full"
-              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--pink-fun)), hsl(var(--teal-fun)), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--pink)), hsl(var(--teal)), transparent)" }}
             />
             {/* Second slash */}
             <motion.div
