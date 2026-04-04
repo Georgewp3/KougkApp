@@ -67,9 +67,7 @@ export default function GameScreen() {
   const handlePerfectCut = (playerName: string) => {
     applyPerfectCut(playerName);
     playPerfectCut();
-    toast("✂️ Perfect Cut!", {
-      description: `${playerName} gets -10 points! Nice one!`,
-    });
+    // No toast - the big fullscreen animation handles the feedback
   };
 
   const handleEndGame = () => {

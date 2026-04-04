@@ -81,7 +81,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
                 className="text-4xl sm:text-5xl font-extrabold font-display mt-2"
-                style={{ color: "hsl(var(--sunny-fun))", textShadow: "0 0 20px hsl(var(--sunny-fun))" }}
+                style={{ color: "hsl(var(--sunny))", textShadow: "0 0 20px hsl(var(--sunny))" }}
               >
                 -10 Points! 🔥
               </motion.div>
