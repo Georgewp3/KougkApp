@@ -55,7 +55,7 @@ export default function PerfectCut({ activePlayers, totalPlayers, onApply }: Per
               animate={{ x: "-120vw", rotate: 15 }}
               transition={{ duration: 0.35, ease: "easeOut", delay: 0.15 }}
               className="absolute w-[200vw] h-1.5 rounded-full"
-              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--sunny-fun)), hsl(var(--pink-fun)), transparent)" }}
+              style={{ background: "linear-gradient(90deg, transparent, hsl(var(--sunny)), hsl(var(--pink)), transparent)" }}
             />
             {/* Central flash */}
             <motion.div
