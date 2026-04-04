@@ -116,35 +116,69 @@ export default function GameScreen() {
       </header>
 
       <div className="max-w-5xl mx-auto px-4 mt-6 space-y-6">
-        {/* Seating order */}
+        {/* Round table seating */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 flex-wrap text-sm"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative mx-auto"
+          style={{ width: "min(320px, 90vw)", height: "min(320px, 90vw)" }}
         >
-          <span className="text-muted-foreground font-bold text-xs">🪑 Seats:</span>
+          {/* Table */}
+          <div className="absolute inset-[15%] rounded-full border-4 border-border/40 bg-muted/30" 
+            style={{ background: "radial-gradient(circle, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.3) 100%)" }}>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <motion.span 
+                className="text-3xl"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                🃏
+              </motion.span>
+            </div>
+          </div>
+          {/* Players around the table */}
           {state.seatingOrder.map((name, i) => {
             const player = state.players.find((p) => p.name === name);
             const isEliminated = player?.status === "eliminated";
+            const total = state.seatingOrder.length;
+            const angle = (i / total) * 2 * Math.PI - Math.PI / 2;
+            const radius = 44; // percentage from center
+            const x = 50 + radius * Math.cos(angle);
+            const y = 50 + radius * Math.sin(angle);
             return (
-              <motion.span
+              <motion.div
                 key={i}
-                whileHover={{ scale: 1.1, rotate: 3 }}
-                className={`px-2.5 py-1 rounded-full text-xs font-bold border-2 ${
-                  isEliminated
-                    ? "text-muted-foreground/40 line-through border-border/30"
-                    : name === getDealerName()
-                    ? "text-primary-foreground border-primary/40"
-                    : "text-foreground bg-card border-border/50"
-                }`}
-                style={
-                  name === getDealerName() && !isEliminated
-                    ? { background: "var(--gradient-sunset)" }
-                    : {}
-                }
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: i * 0.1, type: "spring", stiffness: 300 }}
+                className="absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${x}%`, top: `${y}%` }}
               >
-                {name}
-              </motion.span>
+                <motion.div
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-extrabold border-2 whitespace-nowrap shadow-md ${
+                    isEliminated
+                      ? "text-muted-foreground/40 line-through border-border/30 bg-muted/50"
+                      : name === getDealerName()
+                      ? "text-primary-foreground border-primary/40"
+                      : name === getCutterName()
+                      ? "text-primary-foreground border-teal-fun/40"
+                      : "text-foreground bg-card border-border/50"
+                  }`}
+                  style={
+                    name === getDealerName() && !isEliminated
+                      ? { background: "var(--gradient-sunset)" }
+                      : name === getCutterName() && !isEliminated
+                      ? { background: "var(--gradient-ocean)" }
+                      : {}
+                  }
+                >
+                  {name === getDealerName() && !isEliminated && "🎴 "}
+                  {name === getCutterName() && !isEliminated && "✂️ "}
+                  {isEliminated && "💀 "}
+                  {name}
+                </motion.div>
+              </motion.div>
             );
           })}
         </motion.div>
