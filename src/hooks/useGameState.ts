@@ -121,12 +121,23 @@ export function useGameState() {
           (p) => p.status !== "eliminated" && p.name !== winnerName && p.score > 100
         );
 
+        // Check if this is a 2-player game (total players, not just active)
+        const totalPlayerCount = prev.players.length;
+
         for (const bp of bustingPlayers) {
-          if (bp.busts === 0) {
-            // First bust
+          if (totalPlayerCount === 2) {
+            // In 2-player games, first bust = immediate elimination
+            bp.busts = 2;
+            bp.status = "eliminated";
+            events.push({
+              type: "elimination",
+              playerName: bp.name,
+              detail: `Busted in a 2-player game! Eliminated!`,
+            });
+          } else if (bp.busts === 0) {
+            // First bust (3+ players)
             bp.busts = 1;
             bp.status = "busted-once";
-            // Reset to highest score among OTHER active (non-eliminated, non-busting-second-time) players
             const otherActive = players.filter(
               (p) => p.id !== bp.id && p.status !== "eliminated"
             );

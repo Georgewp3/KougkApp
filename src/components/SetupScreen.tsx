@@ -79,9 +79,13 @@ export default function SetupScreen({ onStart }: SetupScreenProps) {
           >
             🃏 KougkAPP
           </motion.h1>
-          <p className="text-sm text-muted-foreground font-semibold">
-            Your fun score tracker for real-life Kounkan! ✨
-          </p>
+          <motion.p
+            className="text-lg font-extrabold text-teal-fun uppercase tracking-widest"
+            animate={{ scale: [1, 1.06, 1], rotate: [0, -1, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            TIME FOR KOUGKA MALAKES! 🔥
+          </motion.p>
         </div>
 
         {/* Player count */}
