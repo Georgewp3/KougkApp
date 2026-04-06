@@ -121,21 +121,28 @@ export function useGameState() {
           (p) => p.status !== "eliminated" && p.name !== winnerName && p.score > 100
         );
 
+        // Check how many active players would survive if all busting players are eliminated
+        const activeBefore = players.filter((p) => p.status !== "eliminated");
+        const survivorsCount = activeBefore.length - bustingPlayers.length;
+        const massElimination = survivorsCount <= 1 && bustingPlayers.length > 0;
+
         // Check if this is a 2-player game (total players, not just active)
         const totalPlayerCount = prev.players.length;
 
         for (const bp of bustingPlayers) {
-          if (totalPlayerCount === 2) {
-            // In 2-player games, first bust = immediate elimination
+          if (totalPlayerCount === 2 || massElimination) {
+            // Immediate elimination: 2-player game OR mass bust leaving ≤1 survivor
             bp.busts = 2;
             bp.status = "eliminated";
             events.push({
               type: "elimination",
               playerName: bp.name,
-              detail: `Busted in a 2-player game! Eliminated!`,
+              detail: massElimination
+                ? `Mass bust! Eliminated immediately!`
+                : `Busted in a 2-player game! Eliminated!`,
             });
           } else if (bp.busts === 0) {
-            // First bust (3+ players)
+            // First bust (safe — enough players survive)
             bp.busts = 1;
             bp.status = "busted-once";
             const otherActive = players.filter(
