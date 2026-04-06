@@ -120,21 +120,17 @@ export default function GameScreen() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="relative mx-auto"
-          style={{ width: "min(360px, 92vw)", height: "min(280px, 70vw)", perspective: "600px" }}
+          style={{ width: "min(340px, 90vw)", height: "min(340px, 90vw)" }}
         >
-          {/* 3D Table surface */}
+          {/* Simple flat circle table */}
           <div
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-[6px]"
+            className="absolute inset-[18%] rounded-full border-2"
             style={{
-              width: "70%",
-              height: "70%",
-              transform: "translate(-50%, -50%) rotateX(35deg)",
-              background: "radial-gradient(ellipse at 50% 40%, hsl(var(--card)) 0%, hsl(var(--muted)) 60%, hsl(var(--border) / 0.5) 100%)",
-              borderColor: "hsl(var(--border) / 0.6)",
-              boxShadow: "0 18px 40px -10px hsl(var(--foreground) / 0.15), inset 0 -4px 12px hsl(var(--foreground) / 0.05)",
+              borderColor: "hsl(var(--border) / 0.4)",
+              background: "radial-gradient(circle, hsl(var(--muted) / 0.3) 0%, hsl(var(--muted) / 0.1) 100%)",
             }}
           >
-            <div className="absolute inset-0 flex items-center justify-center" style={{ transform: "rotateX(-35deg)" }}>
+            <div className="absolute inset-0 flex items-center justify-center">
               <motion.span
                 className="text-3xl"
                 animate={{ rotate: 360 }}
@@ -150,22 +146,24 @@ export default function GameScreen() {
             const isEliminated = player?.status === "eliminated";
             const total = state.seatingOrder.length;
             const angle = (i / total) * 2 * Math.PI - Math.PI / 2;
-            const radiusX = 48;
-            const radiusY = 42;
-            const x = 50 + radiusX * Math.cos(angle);
-            const y = 50 + radiusY * Math.sin(angle);
+            const radius = 45;
+            const x = 50 + radius * Math.cos(angle);
+            const y = 50 + radius * Math.sin(angle);
+            const SEAT_EMOJIS = ["🧑", "👩", "👨", "👩‍🦰", "🧔", "👱", "👩‍🦱", "🧑‍🦳"];
+            const seatEmoji = SEAT_EMOJIS[i % SEAT_EMOJIS.length];
             return (
               <motion.div
                 key={i}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: i * 0.1, type: "spring", stiffness: 300 }}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${x}%`, top: `${y}%`, zIndex: Math.round(y) }}
+                className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5"
+                style={{ left: `${x}%`, top: `${y}%` }}
               >
+                <span className="text-2xl">{isEliminated ? "💀" : seatEmoji}</span>
                 <motion.div
-                  whileHover={{ scale: 1.15, y: -4 }}
-                  className={`px-4 py-2 rounded-full text-xs font-extrabold whitespace-nowrap ${
+                  whileHover={{ scale: 1.1 }}
+                  className={`px-3 py-1 rounded-full text-xs font-extrabold whitespace-nowrap ${
                     isEliminated
                       ? "text-muted-foreground/40 line-through bg-muted/50"
                       : name === getDealerName()
@@ -177,7 +175,7 @@ export default function GameScreen() {
                   style={{
                     boxShadow: isEliminated
                       ? "none"
-                      : "0 4px 14px -2px hsl(var(--foreground) / 0.12), 0 1px 3px hsl(var(--foreground) / 0.08)",
+                      : "0 2px 8px -2px hsl(var(--foreground) / 0.1)",
                     ...(name === getDealerName() && !isEliminated
                       ? { background: "var(--gradient-sunset)" }
                       : name === getCutterName() && !isEliminated
@@ -187,7 +185,6 @@ export default function GameScreen() {
                 >
                   {name === getDealerName() && !isEliminated && "🎴 "}
                   {name === getCutterName() && !isEliminated && "✂️ "}
-                  {isEliminated && "💀 "}
                   {name}
                 </motion.div>
               </motion.div>
