@@ -120,13 +120,22 @@ export default function GameScreen() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="relative mx-auto"
-          style={{ width: "min(320px, 90vw)", height: "min(320px, 90vw)" }}
+          style={{ width: "min(360px, 92vw)", height: "min(280px, 70vw)", perspective: "600px" }}
         >
-          {/* Table */}
-          <div className="absolute inset-[15%] rounded-full border-4 border-border/40 bg-muted/30" 
-            style={{ background: "radial-gradient(circle, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.3) 100%)" }}>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.span 
+          {/* 3D Table surface */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-[6px]"
+            style={{
+              width: "70%",
+              height: "70%",
+              transform: "translate(-50%, -50%) rotateX(35deg)",
+              background: "radial-gradient(ellipse at 50% 40%, hsl(var(--card)) 0%, hsl(var(--muted)) 60%, hsl(var(--border) / 0.5) 100%)",
+              borderColor: "hsl(var(--border) / 0.6)",
+              boxShadow: "0 18px 40px -10px hsl(var(--foreground) / 0.15), inset 0 -4px 12px hsl(var(--foreground) / 0.05)",
+            }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center" style={{ transform: "rotateX(-35deg)" }}>
+              <motion.span
                 className="text-3xl"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -141,9 +150,10 @@ export default function GameScreen() {
             const isEliminated = player?.status === "eliminated";
             const total = state.seatingOrder.length;
             const angle = (i / total) * 2 * Math.PI - Math.PI / 2;
-            const radius = 44; // percentage from center
-            const x = 50 + radius * Math.cos(angle);
-            const y = 50 + radius * Math.sin(angle);
+            const radiusX = 48;
+            const radiusY = 42;
+            const x = 50 + radiusX * Math.cos(angle);
+            const y = 50 + radiusY * Math.sin(angle);
             return (
               <motion.div
                 key={i}
@@ -151,26 +161,29 @@ export default function GameScreen() {
                 animate={{ scale: 1 }}
                 transition={{ delay: i * 0.1, type: "spring", stiffness: 300 }}
                 className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${x}%`, top: `${y}%` }}
+                style={{ left: `${x}%`, top: `${y}%`, zIndex: Math.round(y) }}
               >
                 <motion.div
-                  whileHover={{ scale: 1.15, rotate: 5 }}
-                  className={`px-3 py-1.5 rounded-full text-xs font-extrabold border-2 whitespace-nowrap shadow-md ${
+                  whileHover={{ scale: 1.15, y: -4 }}
+                  className={`px-4 py-2 rounded-full text-xs font-extrabold whitespace-nowrap ${
                     isEliminated
-                      ? "text-muted-foreground/40 line-through border-border/30 bg-muted/50"
+                      ? "text-muted-foreground/40 line-through bg-muted/50"
                       : name === getDealerName()
-                      ? "text-primary-foreground border-primary/40"
+                      ? "text-primary-foreground"
                       : name === getCutterName()
-                      ? "text-primary-foreground border-teal-fun/40"
-                      : "text-foreground bg-card border-border/50"
+                      ? "text-primary-foreground"
+                      : "text-foreground bg-card"
                   }`}
-                  style={
-                    name === getDealerName() && !isEliminated
+                  style={{
+                    boxShadow: isEliminated
+                      ? "none"
+                      : "0 4px 14px -2px hsl(var(--foreground) / 0.12), 0 1px 3px hsl(var(--foreground) / 0.08)",
+                    ...(name === getDealerName() && !isEliminated
                       ? { background: "var(--gradient-sunset)" }
                       : name === getCutterName() && !isEliminated
                       ? { background: "var(--gradient-ocean)" }
-                      : {}
-                  }
+                      : {}),
+                  }}
                 >
                   {name === getDealerName() && !isEliminated && "🎴 "}
                   {name === getCutterName() && !isEliminated && "✂️ "}
